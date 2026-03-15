@@ -1,0 +1,440 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abhinabo Mondal - Portfolio</title>
+    <link href="{% static '/css/main.css' %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"> <!-- For icons -->
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #0056b3;
+            --accent-color: #00d2d3;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --3d-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* Simple animated gradient as live wallpaper */
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .container {
+            max-width: 1200px;
+            padding: 20px;
+        }
+        /* Profile Header */
+        .profile-header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+        #profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--primary-color);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+            transition: transform 0.3s ease;
+        }
+        #profile-pic:hover {
+            transform: scale(1.05) rotate(5deg);
+        }
+        .profile-name {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-top: 20px;
+        }
+        .profile-summary {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+        /* Social Links */
+        .social-links {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .social-links li {
+            margin: 0;
+        }
+        .social {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Bounce ease */
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+        .social:hover {
+            transform: translateY(-5px) scale(1.2) rotate(10deg);
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
+        }
+        /* Card Styling */
+        .section-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            perspective: 1000px; /* For 3D effects */
+        }
+        .section-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        .section-card:hover::before {
+            transform: scaleX(1);
+        }
+        .section-card:hover {
+            transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
+            box-shadow: var(--3d-shadow);
+        }
+        .section-title {
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--accent-color);
+            border-radius: 2px;
+        }
+        /* Education List */
+        .education-list {
+            list-style: none;
+            padding: 0;
+        }
+        .education-list li {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--primary-color);
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        .education-list li:hover {
+            border-left-color: var(--accent-color);
+            transform: translateX(5px);
+        }
+        .education-list strong {
+            color: var(--text-dark);
+            display: block;
+            font-size: 1.1rem;
+        }
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            list-style: none;
+            padding: 0;
+        }
+        .skills-grid li {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 10px 15px;
+            border-radius: 25px;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            overflow: hidden;
+        }
+        .skills-grid li::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+        .skills-grid li:hover::before {
+            left: 100%;
+        }
+        .skills-grid li:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3);
+        }
+        /* Projects */
+        .projects-list {
+            list-style: none;
+            padding: 0;
+        }
+        .projects-list li {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        .projects-list li:hover {
+            transform: rotateX(10deg);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .projects-list h6 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        .projects-list ul {
+            padding-left: 20px;
+            list-style-type: none;
+        }
+        .projects-list ul li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 5px;
+            color: var(--text-light);
+        }
+        .projects-list ul li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        /* Soft Skills & Hobbies */
+        .soft-skills-list, .hobbies-list {
+            list-style: none;
+            padding: 0;
+        }
+        .soft-skills-list li, .hobbies-list li {
+            padding: 8px 0;
+            position: relative;
+            padding-left: 25px;
+            transition: color 0.3s ease;
+        }
+        .soft-skills-list li::before, .hobbies-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        .soft-skills-list li:hover, .hobbies-list li:hover {
+            color: var(--primary-color);
+            transform: translateX(5px);
+        }
+        .hobbies-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #e9ecef;
+        }
+        .hobbies-section h6 {
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .profile-name {
+                font-size: 2rem;
+            }
+            .skills-grid {
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            }
+            .section-card:hover {
+                transform: translateY(-5px) !important; /* Reduce 3D on mobile */
+            }
+        }
+        /* Loading Animation */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .section-card {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .section-card:nth-child(1) { animation-delay: 0.1s; }
+        .section-card:nth-child(2) { animation-delay: 0.2s; }
+        .section-card:nth-child(3) { animation-delay: 0.3s; }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <section class="container-fluid p-5 text-center" style="background: rgba(255,255,255,0.1);">
+        <h1 class="profile-name mb-3" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">Abhinabo Mondal</h1>
+        <p class="lead text-light mb-4">Kulti, Paschim Bardhaman, WB, 713343</p>
+        <div class="d-flex justify-content-center align-items-center gap-4 text-light">
+            <a href="mailto:abhinabomondal@gmail.com" class="text-light"><i class="fas fa-envelope fa-lg"></i></a>
+            <a href="tel:+919339901227" class="text-light"><i class="fas fa-phone fa-lg"></i></a>
+            <a href="https://www.linkedin.com/in/abhinabo-mondal-227182290" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg"></i></a>
+        </div>
+    </section>
+    <div class="container">
+        <!-- Profile Summary -->
+        <div class="row">
+            <div class="col-12">
+                <div class="profile-header section-card">
+                    <div class="row align-items-center">
+                        <div class="col-md-3 text-center">
+                            <img id="profile-pic" src="{% static 'images/halfshirt.jpeg' %}" alt="Abhinabo Mondal">
+                        </div>
+                        <div class="col-md-9">
+                            <h4 class="section-title">Profile Summary</h4>
+                            <p class="profile-summary">I am a Computer Science and Engineering student specializing in Internet of Things and Cyber Security, with hands-on experience in software and hardware-based projects. I have developed AI-driven applications using Python, OpenCV, and TensorFlow, including a vision-based virtual mouse and hand sign and emotion detection systems. I am passionate about solving real world problems through innovative technology and continuously improving my technical and problem-solving skills.</p>
+                            <ul class="social-links">
+                                <li><a href="https://www.google.com/maps/search/?api=1&query=Kulti+simulgram%2C+po-+kulti%2C+Paschim+Bardhaman%2C+WB%2C713343" target="_blank" rel="noopener noreferrer"><img class="social" src="{% static 'images/mapimg.png' %}" alt="Location"></a></li>
+                                <li><a href="https://www.linkedin.com/in/abhinabo-mondal-227182290?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener noreferrer"><img class="social" src="{% static 'images/linkedin.png' %}" alt="LinkedIn"></a></li>
+                                <li><a href="https://www.instagram.com/majestic_maverick.7?igsh=MXAxOWI5dnVwYnVmOQ==" target="_blank" rel="noopener noreferrer"><img class="social" src="{% static 'images/instaimg.jpg' %}" alt="Instagram"></a></li>
+                                <li><a href="mailto:abhinabomondal@gmail.com"><img class="social" src="{% static 'images/mailimg.png' %}" alt="Email"></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <!-- Education and Skills Row -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="section-card">
+                    <h5 class="section-title">Education</h5>
+                    <ul class="education-list">
+                        <li><strong>Asansol Engineering College</strong><br>Bachelor of Technology (B.Tech) in Computer Science and Engineering (Internet of Things, Cyber Security, and Blockchain Technology) - CGPA: 7.7</li>
+                        <li><strong>Dishergarh A.C. Institution</strong><br>Higher Secondary (12th) – 86.4%</li>
+                        <li><strong>Asansol Ramakrishna Mission High School</strong><br>Secondary (10th) – 90.28%</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="section-card">
+                    <h5 class="section-title">Technical Skills</h5>
+                    <ul class="skills-grid">
+                        <li>JAVA</li>
+                        <li>IntelliJ</li>
+                        <li>GitHub</li>
+                        <li>Python</li>
+                        <li>PyCharm</li>
+                        <li>Django</li>
+                        <li>MongoDB</li>
+                        <li>Jupyter Notebook</li>
+                        <li>Flask</li>
+                        <li>VS Code</li>
+                        <li>Git</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <br>
+        <!-- Projects and Soft Skills Row -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="section-card">
+                    <h5 class="section-title">Projects</h5>
+                    <ul class="projects-list">
+                        <li>
+                            <h6>Hand Sign and Emotion Detection System</h6>
+                            <ul>
+                                <li>Built an AI-based real-time system using Python, OpenCV, and TensorFlow to detect hand gestures and facial emotions.</li>
+                                <li>Implemented Indian Sign Language (ISL) gesture recognition and emotion classification models.</li>
+                                <li>Improved human-computer interaction and accessibility through accurate gesture and emotion detection.</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <h6>Vision-Based Virtual Mouse</h6>
+                            <ul>
+                                <li>Developed a touch-free virtual mouse using Python, OpenCV, and MediaPipe for cursor movement and click operations.</li>
+                                <li>Implemented real-time hand tracking and gesture recognition for smooth and accurate pointer control.</li>
+                                <li>Enabled hands-free interaction without the need for physical mouse hardware.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="section-card">
+                    <h5 class="section-title">Soft Skills</h5>
+                    <ul class="soft-skills-list">
+                        <li>Communication Skills</li>
+                        <li>Problem Solving</li>
+                        <li>Teamwork & Collaboration</li>
+                        <li>Creativity and Innovation</li>
+                    </ul>
+                    <div class="hobbies-section">
+                        <h6>Hobbies</h6>
+                        <ul class="hobbies-list">
+                            <li>FOOTBALL</li>
+                            <li>ARTS & CRAFT</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer class="text-center mt-5 py-4" style="color: rgba(255,255,255,0.8);">
+        <p>&copy; 2026 Abhinabo Mondal. Built with ❤️ and Django.</p>
+    </footer>
+    <script>
+        // Simple scroll reveal (no external lib)
+        window.addEventListener('scroll', () => {
+            const cards = document.querySelectorAll('.section-card');
+            cards.forEach(card => {
+                const cardTop = card.getBoundingClientRect().top;
+                const cardVisible = 150;
+                if (cardTop < window.innerHeight - cardVisible) {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
